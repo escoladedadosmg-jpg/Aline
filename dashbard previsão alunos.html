@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SESC Araxá — Dashboard de Previsão 2026</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              900: '#1e3a8a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .chart-container {
+      position: relative;
+      height: 320px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          S
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-slate-900">SESC Araxá <span class="text-slate-400 font-normal">|</span> Planejamento 2026</h1>
+          <p class="text-xs text-slate-500 font-medium">Esporte, Cultura e Ação Social — Previsão de Demanda vs. Capacidade Física</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
+          Base Consolidada 2026
+        </span>
+        <button onclick="window.print()" class="px-3 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition shadow-xs">
+          Imprimir Relatório
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition">
+        <div class="flex justify-between items-start">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Demanda Prevista</span>
+          <span class="p-2 rounded-xl bg-blue-50 text-blue-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          </span>
+        </div>
+        <div class="mt-3">
+          <p class="text-2xl font-extrabold text-slate-900">6.811</p>
+          <p class="text-xs text-slate-500 mt-1">Alunos projetados em 315 faixas</p>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition">
+        <div class="flex justify-between items-start">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Capacidade Máxima</span>
+          <span class="p-2 rounded-xl bg-slate-100 text-slate-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          </span>
+        </div>
+        <div class="mt-3">
+          <p class="text-2xl font-extrabold text-slate-900">7.424</p>
+          <p class="text-xs text-slate-500 mt-1">Teto agregado de atendimento</p>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition">
+        <div class="flex justify-between items-start">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Ocupação Ponderada</span>
+          <span class="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </span>
+        </div>
+        <div class="mt-3">
+          <p class="text-2xl font-extrabold text-indigo-600">91,7%</p>
+          <div class="w-full bg-slate-100 rounded-full h-1.5 mt-2 overflow-hidden">
+            <div class="bg-indigo-600 h-1.5 rounded-full" style="width: 91.7%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition">
+        <div class="flex justify-between items-start">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Vagas Livres (Margem)</span>
+          <span class="p-2 rounded-xl bg-amber-50 text-amber-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </span>
+        </div>
+        <div class="mt-3 flex items-baseline justify-between">
+          <p class="text-2xl font-extrabold text-amber-600">613</p>
+          <span class="text-xs font-medium text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md">10 turmas > 100%</span>
+        </div>
+        <p class="text-xs text-slate-500 mt-1">Margem operacional líquida</p>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs lg:col-span-2">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+          <div>
+            <h2 class="text-base font-bold text-slate-900">Capacidade Máxima vs. Previsão por Dia da Semana</h2>
+            <p class="text-xs text-slate-500">Comparativo semanal de vagas ofertadas contra a demanda esperada</p>
+          </div>
+          <div class="flex items-center gap-3 mt-2 sm:mt-0 text-xs">
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm bg-slate-300 inline-block"></span> Capacidade</span>
+            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm bg-blue-600 inline-block"></span> Previsto</span>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="diasChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+        <div>
+          <h2 class="text-base font-bold text-slate-900">Classificação das Turmas</h2>
+          <p class="text-xs text-slate-500 mb-2">Comportamento das 315 faixas horárias</p>
+          <div class="chart-container" style="height: 240px;">
+            <canvas id="statusChart"></canvas>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 pt-4 border-t border-slate-100 text-center text-xs">
+          <div class="p-2 bg-emerald-50 rounded-lg">
+            <span class="block font-bold text-emerald-700 text-sm">209</span>
+            <span class="text-emerald-600 font-medium">≥ 90% Alta</span>
+          </div>
+          <div class="p-2 bg-blue-50 rounded-lg">
+            <span class="block font-bold text-blue-700 text-sm">96</span>
+            <span class="text-blue-600 font-medium">&lt; 90% Vagas</span>
+          </div>
+          <div class="p-2 bg-rose-50 rounded-lg">
+            <span class="block font-bold text-rose-700 text-sm">10</span>
+            <span class="text-rose-600 font-medium">&gt; 100% Crítica</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-bold text-slate-900">Atividades com Maior Fluxo de Alunos</h2>
+            <p class="text-xs text-slate-500">Top modalidades por volume agregado previsto para 2026</p>
+          </div>
+          <span class="text-xs font-semibold px-2 py-1 bg-slate-100 rounded-md text-slate-600">Macro Grupos</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="topFluxoChart"></canvas>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-bold text-slate-900">Turmas com Menor Demanda / Ociosidade</h2>
+            <p class="text-xs text-slate-500">Turmas com menor percentual de adesão e vagas sobrando</p>
+          </div>
+          <span class="text-xs font-semibold px-2 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-md">Atenção Gerencial</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="menorDemandaChart"></canvas>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+      <div class="p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-slate-900">Detalhamento Operacional: Gargalos e Oportunidades</h2>
+          <p class="text-xs text-slate-500">Filtre rapidamente turmas com superlotação imediata ou alta ociosidade</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="filterTable('all')" class="filter-btn active px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-900 text-white transition">Todos</button>
+          <button onclick="filterTable('critica')" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Acima da Capacidade (>100%)</button>
+          <button onclick="filterTable('ociosa')" class="filter-btn px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition">Alta Ociosidade (&le;30%)</button>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-600">
+          <thead class="bg-slate-50 text-slate-700 font-semibold uppercase tracking-wider text-[11px] border-b border-slate-100">
+            <tr>
+              <th class="py-3.5 px-4">Modalidade / Turma</th>
+              <th class="py-3.5 px-4">Dia / Horário</th>
+              <th class="py-3.5 px-4 text-center">Previsto</th>
+              <th class="py-3.5 px-4 text-center">Capacidade</th>
+              <th class="py-3.5 px-4 text-center">Saldo Vagas</th>
+              <th class="py-3.5 px-4 text-center">% Ocupação</th>
+              <th class="py-3.5 px-4">Status</th>
+            </tr>
+          </thead>
+          <tbody id="turmasTableBody" class="divide-y divide-slate-100">
+            </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Paleta de Cores Harmônica
+    const colors = {
+      primary: '#2563eb',       // Blue 600
+      primaryLight: '#93c5fd',  // Blue 300
+      slateLight: '#cbd5e1',    // Slate 300
+      emerald: '#059669',       // Emerald 600
+      amber: '#d97706',         // Amber 600
+      rose: '#dc2626',          // Rose 600
+      grayBg: '#f8fafc'
+    };
+
+    // Chart.js Default Settings
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.color = '#64748b';
+
+    // 1. Gráfico de Dias da Semana (Grouped Bar Chart)
+    const ctxDias = document.getElementById('diasChart').getContext('2d');
+    new Chart(ctxDias, {
+      type: 'bar',
+      data: {
+        labels: ['Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'],
+        datasets: [
+          {
+            label: 'Capacidade Máxima',
+            data: [1574, 1596, 1574, 1631, 788, 261],
+            backgroundColor: '#cbd5e1',
+            borderRadius: 6,
+            barPercentage: 0.7,
+            categoryPercentage: 0.6
+          },
+          {
+            label: 'Alunos Previstos',
+            data: [1473, 1405, 1466, 1436, 771, 260],
+            backgroundColor: '#2563eb',
+            borderRadius: 6,
+            barPercentage: 0.7,
+            categoryPercentage: 0.6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1e293b',
+            padding: 10,
+            cornerRadius: 8,
+            callbacks: {
+              afterBody: function(context) {
+                const index = context[0].dataIndex;
+                const prev = [1473, 1405, 1466, 1436, 771, 260][index];
+                const cap = [1574, 1596, 1574, 1631, 788, 261][index];
+                const taxa = ((prev / cap) * 100).toFixed(1);
+                const vagas = cap - prev;
+                return `\nTaxa de Ocupação: ${taxa}%\nVagas Disponíveis: ${vagas}`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 1800,
+            grid: { color: '#f1f5f9' },
+            ticks: { stepSize: 300 }
+          },
+          x: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+
+    // 2. Gráfico de Status (Doughnut)
+    const ctxStatus = document.getElementById('statusChart').getContext('2d');
+    new Chart(ctxStatus, {
+      type: 'doughnut',
+      data: {
+        labels: ['Alta Ocupação (≥90%)', 'Com Vagas (<90%)', 'Superlotadas (>100%)'],
+        datasets: [{
+          data: [209, 96, 10],
+          backgroundColor: ['#10b981', '#3b82f6', '#ef4444'],
+          borderWidth: 3,
+          borderColor: '#ffffff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '72%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { boxWidth: 10, padding: 12, font: { size: 10 } }
+          },
+          tooltip: {
+            backgroundColor: '#1e293b',
+            callbacks: {
+              label: function(item) {
+                const total = 315;
+                const val = item.raw;
+                const perc = ((val / total) * 100).toFixed(1);
+                return ` ${item.label}: ${val} turmas (${perc}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // 3. Gráfico de Atividades com Maior Fluxo (Horizontal Bar)
+    const ctxTop = document.getElementById('topFluxoChart').getContext('2d');
+    new Chart(ctxTop, {
+      type: 'bar',
+      data: {
+        labels: ['Academia', 'Reforço Escolar', 'Futsal', 'Pilates', 'Natação', 'Balé', 'Taekwondo'],
+        datasets: [
+          {
+            label: 'Previstos',
+            data: [3600, 848, 348, 310, 310, 237, 224],
+            backgroundColor: '#0d9488',
+            borderRadius: 6,
+            barPercentage: 0.65
+          },
+          {
+            label: 'Capacidade',
+            data: [3600, 856, 400, 416, 408, 252, 240],
+            backgroundColor: '#e2e8f0',
+            borderRadius: 6,
+            barPercentage: 0.65
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: { boxWidth: 10, font: { size: 10 } }
+          },
+          tooltip: {
+            backgroundColor: '#1e293b',
+            padding: 8
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: '#f1f5f9' }
+          },
+          y: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+
+    // 4. Gráfico de Menor Demanda / Ociosidade
+    const ctxMenor = document.getElementById('menorDemandaChart').getContext('2d');
+    new Chart(ctxMenor, {
+      type: 'bar',
+      data: {
+        labels: [
+          'Danças Urbanas T1',
+          'Pilates T11',
+          'Danças Urbanas T5',
+          'Danças Urbanas T8',
+          'Jazz T2',
+          'Hidroginástica T1',
+          'Futsal T8',
+          'Iniciação Esp. T4'
+        ],
+        datasets: [{
+          label: '% Ocupação',
+          data: [0.0, 15.4, 20.0, 20.0, 22.2, 24.0, 28.0, 33.3],
+          backgroundColor: function(context) {
+            const val = context.raw;
+            return val <= 20 ? '#ef4444' : '#f59e0b';
+          },
+          borderRadius: 6,
+          barPercentage: 0.65
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1e293b',
+            callbacks: {
+              label: function(context) {
+                const info = [
+                  "0 / 30 vagas (30 vagas livres)",
+                  "4 / 26 vagas (22 vagas livres)",
+                  "6 / 30 vagas (24 vagas livres)",
+                  "6 / 30 vagas (24 vagas livres)",
+                  "8 / 36 vagas (28 vagas livres)",
+                  "12 / 50 vagas (38 vagas livres na piscina)",
+                  "14 / 50 vagas (36 vagas livres)",
+                  "10 / 30 vagas (20 vagas livres)"
+                ][context.dataIndex];
+                return ` Ocupação: ${context.raw}% | ${info}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            max: 50,
+            grid: { color: '#f1f5f9' },
+            ticks: { callback: v => v + '%' }
+          },
+          y: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+
+    // Dados da Tabela de Destaques Operacionais
+    const tableData = [
+      // Críticas (>100%)
+      { modalidade: 'Reforço Escolar T15', diaHora: 'Ter/Qui — 16:00/17:00', prev: 12, cap: 10, vagas: -2, taxa: '120.0%', tipo: 'critica', status: 'Superlotada (+2)' },
+      { modalidade: 'Reforço Escolar T16', diaHora: 'Ter/Qui — 16:00/17:00', prev: 12, cap: 10, vagas: -2, taxa: '120.0%', tipo: 'critica', status: 'Superlotada (+2)' },
+      { modalidade: 'Expressão Corporal - Dança', diaHora: 'Sex — 15:00/16:00', prev: 23, cap: 20, vagas: -3, taxa: '115.0%', tipo: 'critica', status: 'Superlotada (+3)' },
+      { modalidade: 'Natação T16', diaHora: 'Ter/Qui — 17:00/18:00', prev: 13, cap: 12, vagas: -1, taxa: '108.3%', tipo: 'critica', status: 'Superlotada (+1)' },
+      { modalidade: 'Danças Urbanas T3', diaHora: 'Seg/Qua — 18:00/19:00', prev: 16, cap: 15, vagas: -1, taxa: '106.7%', tipo: 'critica', status: 'Superlotada (+1)' },
+      { modalidade: 'Expressão Corporal - Boliche', diaHora: 'Seg — 16:00/17:00', prev: 46, cap: 45, vagas: -1, taxa: '102.2%', tipo: 'critica', status: 'Superlotada (+1)' },
+      // Ociosas (Baixa adesão)
+      { modalidade: 'Danças Urbanas T1', diaHora: 'Seg/Qua — 16:00/17:00', prev: 0, cap: 30, vagas: 30, taxa: '0.0%', tipo: 'ociosa', status: 'Ociosa (30 vagas)' },
+      { modalidade: 'Pilates T11', diaHora: 'Ter/Qui — 11:00/12:00', prev: 4, cap: 26, vagas: 22, taxa: '15.4%', tipo: 'ociosa', status: 'Ociosa (22 vagas)' },
+      { modalidade: 'Danças Urbanas T5', diaHora: 'Ter/Qui — 15:00/16:00', prev: 6, cap: 30, vagas: 24, taxa: '20.0%', tipo: 'ociosa', status: 'Ociosa (24 vagas)' },
+      { modalidade: 'Jazz T2', diaHora: 'Ter/Qui — 14:00/15:00', prev: 8, cap: 36, vagas: 28, taxa: '22.2%', tipo: 'ociosa', status: 'Ociosa (28 vagas)' },
+      { modalidade: 'Hidroginástica T1', diaHora: 'Sex — 17:00/18:00', prev: 12, cap: 50, vagas: 38, taxa: '24.0%', tipo: 'ociosa', status: 'Ociosa (38 vagas)' },
+      { modalidade: 'Futsal T8', diaHora: 'Sáb — 10:00/11:00', prev: 14, cap: 50, vagas: 36, taxa: '28.0%', tipo: 'ociosa', status: 'Ociosa (36 vagas)' }
+    ];
+
+    function renderTable(filter) {
+      const tbody = document.getElementById('turmasTableBody');
+      tbody.innerHTML = '';
+      
+      const filtered = filter === 'all' ? tableData : tableData.filter(d => d.tipo === filter);
+
+      filtered.forEach(item => {
+        const isCritica = item.tipo === 'critica';
+        const badgeColor = isCritica 
+          ? 'bg-rose-50 text-rose-700 border-rose-200' 
+          : 'bg-amber-50 text-amber-700 border-amber-200';
+
+        const row = `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-3 px-4 font-semibold text-slate-900">${item.modalidade}</td>
+            <td class="py-3 px-4 text-slate-500">${item.diaHora}</td>
+            <td class="py-3 px-4 text-center font-bold ${isCritica ? 'text-rose-600' : 'text-slate-800'}">${item.prev}</td>
+            <td class="py-3 px-4 text-center text-slate-500">${item.cap}</td>
+            <td class="py-3 px-4 text-center font-semibold ${item.vagas < 0 ? 'text-rose-600' : 'text-emerald-600'}">${item.vagas}</td>
+            <td class="py-3 px-4 text-center font-bold">${item.taxa}</td>
+            <td class="py-3 px-4">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium border ${badgeColor}">
+                ${item.status}
+              </span>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function filterTable(filter) {
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('bg-slate-900', 'text-white', 'active');
+        btn.classList.add('bg-slate-100', 'text-slate-700');
+      });
+      event.target.classList.add('bg-slate-900', 'text-white', 'active');
+      event.target.classList.remove('bg-slate-100', 'text-slate-700');
+      renderTable(filter);
+    }
+
+    // Inicialização da Tabela
+    renderTable('all');
+  </script>
+
+</body>
+</html>
